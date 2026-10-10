@@ -8,9 +8,9 @@ namespace GymManagementSystem.DAL.Repositories.Classes;
 public class PlanRepository : IPlanRepository
 {
     private GymDbContext _dbContext;
-    public PlanRepository()
+    public PlanRepository(GymDbContext dbContext)
     {
-        _dbContext= new GymDbContext();
+        _dbContext= dbContext;
     }
     public async Task<int> AddAsync(Plan plan)
     {

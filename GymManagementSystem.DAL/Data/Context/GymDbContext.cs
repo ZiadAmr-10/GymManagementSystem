@@ -6,6 +6,10 @@ namespace GymManagementSystem.DAL.Data.Context;
 
 public class GymDbContext :DbContext
 {
+    public GymDbContext(DbContextOptions<GymDbContext> options):base(options)
+    {
+        
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer("Server=.;Database=GymManagementSystem;Trusted_Connection=True;TrustServerCertificate=true");

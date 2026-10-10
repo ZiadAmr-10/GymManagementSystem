@@ -6,23 +6,23 @@ using Microsoft.EntityFrameworkCore;
 namespace GymManagementSystem.PL.Controllers;
 public class PlanController : Controller
 {
-    private IPlanRepository PlanRepository;
+    private IPlanRepository _planRepository;
 
-    public PlanController()
+    public PlanController(IPlanRepository PlanRepository)
     {
-        PlanRepository=new PlanRepository();
+        _planRepository = PlanRepository;
     }
 
     public async Task<IActionResult> Index()
 
     {
-        var plan = await PlanRepository.GetALLAsync();
+        var plan = await _planRepository.GetALLAsync();
         return View(plan);
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var plan = await PlanRepository.GetByIdAsync(id);
+        var plan = await _planRepository.GetByIdAsync(id);
         if (plan == null)
             return RedirectToAction(nameof(Index));
         else
