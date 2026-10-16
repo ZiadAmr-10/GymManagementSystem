@@ -2,7 +2,7 @@
 
 namespace GymManagementSystem.DAL.Models;
 
-public class Trainer
+public class Trainer : GymUsers
 {
     //HireDate => CreatedAt
     public Specialty Specialty { get; set; }
