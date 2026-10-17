@@ -19,8 +19,11 @@ public class GymDbContext :DbContext
     }
 
     public DbSet<Plan> Plans { get; set; }
-    public DbSet<Session> Session { get; set; }
-    public DbSet<Category> Category { get; set; }
-    public DbSet<Member> Member { get; set; }
-    public DbSet<Trainer> Trainer { get; set; }
+    public DbSet<Session> Sessions { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Member> Members { get; set; }
+    public DbSet<Trainer> Trainers { get; set; }
+    public DbSet<HealthRecord> HealthRecords { get; set; }
+    public DbSet<MemberSession> MemberSessions { get; set; }
+    public DbSet<MemberShip> MemberShips { get; set; }
 }

@@ -6,7 +6,7 @@ namespace GymManagementSystem.DAL.Data.Configurations;
 
 public class MemberConfigurations : GymUserConfigurations<Member>
 {
-    public new void Configure(EntityTypeBuilder<Member> builder)
+    public override void Configure(EntityTypeBuilder<Member> builder)
     {
         builder.Property(x => x.CreatedAt)
                .HasColumnName("JoinDate")

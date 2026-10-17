@@ -13,7 +13,9 @@ public class SessionConfigurations : IEntityTypeConfiguration<Session>
             tb.HasCheckConstraint("CapacityCheck", "Capacity Between 1 and 25");
             tb.HasCheckConstraint("EndDateCheck", "EndDate > StartDate");
         });
+
+        builder.Property(x => x.CreatedAt)
+                .HasDefaultValueSql("GETDATE()");
            
-        
     }
 }

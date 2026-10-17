@@ -6,7 +6,7 @@ namespace GymManagementSystem.DAL.Data.Configurations;
 
 public class GymUserConfigurations<T> : IEntityTypeConfiguration<T> where T : GymUsers, new()
 {
-    public void Configure(EntityTypeBuilder<T> builder)
+    public virtual void Configure(EntityTypeBuilder<T> builder)
     {
         builder.Property(x => x.Name)
                .HasColumnType("varchar")
@@ -20,8 +20,8 @@ public class GymUserConfigurations<T> : IEntityTypeConfiguration<T> where T : Gy
 
         builder.ToTable(tb =>
         {
-            tb.HasCheckConstraint("EmailCheck", ("Email like '_&@_%._%'"));
-            tb.HasCheckConstraint("PhoneCheck", "Phone like '010%' or Phone like '011%' orPhone like '012%' orPhone like '015%'");
+            tb.HasCheckConstraint("EmailCheck", ("Email like '_%@_%._%'"));
+            tb.HasCheckConstraint("PhoneCheck", "Phone like '010%' or Phone like '011%' or Phone like '012%' or Phone like '015%'");
         });
 
         builder.OwnsOne(x => x.Address, Address =>

@@ -7,7 +7,7 @@ namespace GymManagementSystem.DAL.Data.Configurations;
 
 public class TrainerConfigurations : GymUserConfigurations<Trainer>
 {
-    public new void Configure(EntityTypeBuilder<Trainer> builder)
+    public override void Configure(EntityTypeBuilder<Trainer> builder)
     {
         builder.Property(x => x.CreatedAt)
                 .HasColumnName("HiringDate")
