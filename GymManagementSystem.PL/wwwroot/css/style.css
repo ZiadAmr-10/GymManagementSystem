@@ -588,3 +588,47 @@ footer .footer-content .location p {
         border-color: var(--primary-color);
         -webkit-text-fill-color: #fff; /* ensures text stays visible on hover */
     }
+
+/* Moving Bar Animation */
+.bar {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.bar-track {
+    display: flex;
+    width: max-content;
+    flex-shrink: 0;
+    animation: marquee 20s linear infinite;
+}
+
+.bar-content {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 25px;
+    margin: 0;
+    padding-right: 25px;
+}
+
+    .bar-content img {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bar-track {
+        animation: none;
+    }
+}
