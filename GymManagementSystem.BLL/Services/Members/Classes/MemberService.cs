@@ -10,7 +10,7 @@ public class MemberService : IMemberService
     private readonly IRepository<Member> _membersRepository;
     public MemberService(IRepository<Member> membersRepository)
     {
-        IRepository<Member> _membersRepository = membersRepository;
+        _membersRepository = membersRepository;
     }
     public async Task<IEnumerable<MemberViewModel>> GetMembersAsync()
     {

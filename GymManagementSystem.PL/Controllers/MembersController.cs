@@ -12,9 +12,9 @@ public class MembersController : Controller
     {
         _memberService = memberService;
     }
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var Members = _memberService.GetMembersAsync();
+        var Members = await _memberService.GetMembersAsync();
         return View(Members);
-    }
+    } 
 }
