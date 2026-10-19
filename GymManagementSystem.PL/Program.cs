@@ -1,3 +1,5 @@
+using GymManagementSystem.BLL.Services.Members.Classes;
+using GymManagementSystem.BLL.Services.Members.Intefaces;
 using GymManagementSystem.DAL.Data.Context;
 using GymManagementSystem.DAL.Repositories.Classes;
 using GymManagementSystem.DAL.Repositories.Interfaces;
@@ -20,6 +22,8 @@ namespace GymManagementSystem.PL
             builder.Services.AddScoped<IPlanRepository,PlanRepository>();
 
             builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
+
+            builder.Services.AddScoped<IMemberService, MemberService>();
 
 
             var app = builder.Build();
