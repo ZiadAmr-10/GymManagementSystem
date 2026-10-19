@@ -7,7 +7,7 @@ namespace GymManagementSystem.DAL.Repositories.Classes;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, new() 
 {
-    private readonly GymDbContext _dbContext;
+    protected readonly GymDbContext _dbContext;
     private readonly DbSet<TEntity> _set;
 
     public Repository(GymDbContext dbContext)

@@ -1,12 +1,10 @@
 ﻿using GymManagementSystem.DAL.Models;
 namespace GymManagementSystem.DAL.Repositories.Interfaces;
-public interface IPlanRepository
+public interface IPlanRepository : IRepository<Plan>
 {
     //// Enable tracking when the entity needs to be updated or deleted.
-    public Task<IEnumerable<Plan>> GetALLAsync(bool tracking = false);
-    public Task<Plan?> GetByIdAsync(int id);
-    public Task<int> AddAsync(Plan plan);
-    public Task<int> UpdateAsync(Plan plan);
-    public Task<int> DeleteAsync(Plan plan);
+    
 
+    public Task<IEnumerable<Plan>> GetAllWithMemberShipsAsync(bool tracking = false);
+    
 }

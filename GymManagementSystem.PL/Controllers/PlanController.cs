@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace GymManagementSystem.PL.Controllers;
 public class PlanController : Controller
 {
-    private IPlanRepository _planRepository;
+    private readonly IPlanRepository _planRepository;
 
     public PlanController(IPlanRepository PlanRepository)
     {
@@ -16,7 +16,7 @@ public class PlanController : Controller
     public async Task<IActionResult> Index()
 
     {
-        var plan = await _planRepository.GetALLAsync();
+        var plan = await _planRepository.GetAllAsync();
         return View(plan);
     }
 
