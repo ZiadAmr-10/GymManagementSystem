@@ -1,4 +1,5 @@
 ﻿using GymManagementSystem.BLL.Services.Members.Intefaces;
+using GymManagementSystem.BLL.Services.Members.ViewModels;
 using GymManagementSystem.DAL.Models;
 using GymManagementSystem.DAL.Repositories.Interfaces;
 
@@ -11,8 +12,17 @@ public class MemberService : IMemberService
     {
         IRepository<Member> _membersRepository = membersRepository;
     }
-    public async Task<IEnumerable<Member>> GetMembersAsync()
+    public async Task<IEnumerable<MemberViewModel>> GetMembersAsync()
     {
-        return await _membersRepository.GetAllAsync();
+        var members = await _membersRepository.GetAllAsync();
+        return members.Select(x => new MemberViewModel()
+        {
+            id=x.Id,
+            Name=x.Name,
+            Email=x.Email,
+            Phone=x.Phone,
+            Gender=x.Gender.ToString(),
+            Photo=x.Photo,
+        });
     }
 }

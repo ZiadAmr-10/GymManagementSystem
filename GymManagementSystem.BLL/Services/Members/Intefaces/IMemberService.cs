@@ -1,8 +1,9 @@
-﻿using GymManagementSystem.DAL.Models;
+﻿using GymManagementSystem.BLL.Services.Members.ViewModels;
+using GymManagementSystem.DAL.Models;
 
 namespace GymManagementSystem.BLL.Services.Members.Intefaces;
 
 public interface IMemberService
 {
-    public Task<IEnumerable<Member>> GetMembersAsync();
+    public Task<IEnumerable<MemberViewModel>> GetMembersAsync();
 }
