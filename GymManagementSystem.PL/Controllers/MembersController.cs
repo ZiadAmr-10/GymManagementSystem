@@ -16,5 +16,10 @@ public class MembersController : Controller
     {
         var Members = await _memberService.GetMembersAsync();
         return View(Members);
-    } 
+    }
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
 }
