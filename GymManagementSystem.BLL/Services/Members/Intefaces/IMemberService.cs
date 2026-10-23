@@ -6,4 +6,5 @@ namespace GymManagementSystem.BLL.Services.Members.Intefaces;
 public interface IMemberService
 {
     public Task<IEnumerable<MemberViewModel>> GetMembersAsync();
+    public Task<bool> AddMemberAsync(CreateMemberViewModel model); 
 }

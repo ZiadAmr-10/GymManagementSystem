@@ -93,7 +93,7 @@
 
                         <div class="col-12 col-md-6">
                             <label asp-for="HealthRecordViewModel.BloodType" class="form-label"></label>
-                            <select name="BloodType" class="form-select">
+                            <select asp-for="HealthRecordViewModel.BloodType" class="form-select">
                                 <option value="">Select</option>
                                 <option>A+</option>
                                 <option>A-</option>
@@ -114,7 +114,7 @@
             </div>
 
             <footer class="d-flex justify-content-end gap-3 mt-4">
-                <a asp-controller="Member" asp-action="Index" class="btn btn-outline-secondary px-4">
+                <a asp-controller="Members" asp-action="Index" class="btn btn-outline-secondary px-4">
                     <i class="bi bi-arrow-left me-2"></i> Back to List
                 </a>
 
