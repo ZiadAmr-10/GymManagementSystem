@@ -139,8 +139,7 @@
     </main>
 </div>
 @section Scripts{
-    @* <script src="../js/jquery.validate.min.js"></script>
-    <script src="../js/jquery.validate.unobtrusive.min.js"></script> *@
+    <partial name = "_ValidationScriptsPartial.cshtml" />
     <script>
         // Preview photo before upload
         document.getElementById('photoInput').addEventListener('change', function(e) {
