@@ -17,17 +17,11 @@ public class MemberService : IMemberService
     {
         try
         {
-            var members = await _membersRepository.GetAllAsync();
-            bool IsNotUniquePhone = members.Any(x => x.Phone == model.Phone);
-            bool IsNotUniqueEmail = members.Any(x => x.Email == model.Email);
-            if (IsNotUniquePhone || IsNotUniqueEmail)
-                return false;
-
             var Member = new Member()
             {
                 Name = model.Name,
                 Email = model.Email,
-                DateOfBirth = model.DateOfBirth,
+                DateOfBirth = model.DateOfBirth.Value,
                 Gender = model.Gender,
                 Phone = model.Phone,
                 Address = new Address()

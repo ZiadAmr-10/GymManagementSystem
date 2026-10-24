@@ -1,18 +1,19 @@
 ﻿using GymManagementSystem.BLL.Services.Members.Intefaces;
 using GymManagementSystem.BLL.Services.Members.ViewModels;
-using GymManagementSystem.DAL.Models;
-using GymManagementSystem.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using FluentValidation;
 
 namespace GymManagementSystem.PL.Controllers;
 
 public class MembersController : Controller
 {
     private readonly IMemberService _memberService;
-    public MembersController(IMemberService memberService)
+    private readonly IValidator<CreateMemberViewModel> _validator;
+
+    public MembersController(IMemberService memberService, IValidator<CreateMemberViewModel> validator)
     {
         _memberService = memberService;
+        _validator = validator;
     }
     public async Task<IActionResult> Index()
     {
@@ -28,6 +29,11 @@ public class MembersController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateMemberViewModel model)
     {
+        var validationResult = await _validator.ValidateAsync(model);
+        foreach (var error in validationResult.Errors)
+        {
+            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+        }
         if (!ModelState.IsValid)
             return View(nameof(Create),model);
 

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\GymManagementSystem.DAL\GymManagementSystem.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.5.4" />
+  </ItemGroup>
+
 </Project>

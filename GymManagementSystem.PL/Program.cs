@@ -4,6 +4,8 @@ using GymManagementSystem.DAL.Data.Context;
 using GymManagementSystem.DAL.Repositories.Classes;
 using GymManagementSystem.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using GymManagementSystem.BLL.Services.Members.MemberValidations;
 
 namespace GymManagementSystem.PL
 {
@@ -24,6 +26,8 @@ namespace GymManagementSystem.PL
             builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
 
             builder.Services.AddScoped<IMemberService, MemberService>();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateMemberViewModelValidator>();
 
 
             var app = builder.Build();
