@@ -28,13 +28,14 @@ public class MembersController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateMemberViewModel model)
     {
-        if (!ModelState.IsValid)  return View(model);
+        if (!ModelState.IsValid)
+            return View(nameof(Create),model);
 
         var result =await _memberService.AddMemberAsync(model);
 
         if (result) 
             return RedirectToAction(nameof(Index));
         else
-            return View(model);
+            return View(nameof(Create), model);
     }
 }
