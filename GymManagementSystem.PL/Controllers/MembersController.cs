@@ -39,9 +39,16 @@ public class MembersController : Controller
 
         var result =await _memberService.AddMemberAsync(model);
 
-        if (result) 
+        if (result)
+        {
+            TempData["SuccessMessage"] = "Member Created Successfuly";
             return RedirectToAction(nameof(Index));
+        }
         else
+        {
+            TempData["ErrorMessage"] = "Member Created Failed";
+
             return View(nameof(Create), model);
+        }
     }
 }

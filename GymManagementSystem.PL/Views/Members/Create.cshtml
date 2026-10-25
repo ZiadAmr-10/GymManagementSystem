@@ -2,6 +2,14 @@
 @{
     ViewData["Title"] = "Create Member";
 }
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="Alert" class="alert alert-danger alert-dismissible fade show">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
 <div class="container">
     <main role="main" class="pb-3">
 
@@ -143,6 +151,7 @@
 </div>
 @section Scripts{
     <partial name = "_ValidationScriptsPartial.cshtml" />
+    <partial name = "_Alert.cshtml" />
     <script>
         // Preview photo before upload
         document.getElementById('photoInput').addEventListener('change', function(e) {
