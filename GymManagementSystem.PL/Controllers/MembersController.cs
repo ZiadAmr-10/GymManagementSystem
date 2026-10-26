@@ -51,4 +51,21 @@ public class MembersController : Controller
             return View(nameof(Create), model);
         }
     }
+    public async Task<IActionResult> Details(int? id)
+    {
+
+        var member= await _memberService.GetMemberAsync(id);
+
+        if (member == null)
+        {
+            TempData["ErrorMessage"] = "Member Not Found";
+            return RedirectToAction(nameof(Index));
+        }
+        else
+        {
+            return View(member);
+        }
+       
+
+    }
 }

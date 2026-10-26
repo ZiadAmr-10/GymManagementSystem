@@ -29,6 +29,8 @@ namespace GymManagementSystem.PL
 
             builder.Services.AddValidatorsFromAssemblyContaining<CreateMemberViewModelValidator>();
 
+            builder.Services.AddScoped<IMemberRepository, MemberRepository>(); 
+
 
             var app = builder.Build();
 

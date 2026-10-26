@@ -5,12 +5,12 @@ using GymManagementSystem.DAL.Repositories.Interfaces;
 
 namespace GymManagementSystem.BLL.Services.Members.Classes;
 
-public class MemberService : IMemberService
+public class MemberService : IMemberService 
 {
-    private readonly IRepository<Member> _membersRepository;
-    public MemberService(IRepository<Member> membersRepository)
+    private readonly IMemberRepository _memberRepository;
+    public MemberService(IMemberRepository membersRepository)
     {
-        _membersRepository = membersRepository;
+        _memberRepository = membersRepository;
     }
 
     public async Task<bool> AddMemberAsync(CreateMemberViewModel model)
@@ -40,7 +40,7 @@ public class MemberService : IMemberService
 
             };
 
-            return await _membersRepository.AddAsync(Member) > 0;
+            return await _memberRepository.AddAsync(Member) > 0;
         }
         catch
         {
@@ -52,7 +52,7 @@ public class MemberService : IMemberService
 
     public async Task<IEnumerable<MemberViewModel>> GetMembersAsync()
     {
-        var members = await _membersRepository.GetAllAsync();
+        var members = await _memberRepository.GetAllAsync();
         return members.Select(x => new MemberViewModel()
         {
             id=x.Id,
@@ -62,5 +62,31 @@ public class MemberService : IMemberService
             Gender=x.Gender.ToString(),
             Photo=x.Photo,
         });
+    }
+
+    public async Task<MemberDetailsViewModel?> GetMemberAsync(int? Id)
+    {
+        if (Id == null || Id.Value == 0)
+            return null;
+
+        var member = await _memberRepository.GetMemberWithRelatedDataAsync(Id.Value);
+
+        if (member == null)
+            return null;
+
+        var model = new MemberDetailsViewModel()
+        {
+            Email = member.Email,
+            Gender = member.Gender.ToString(),
+            Name = member.Name,
+            Phone = member.Phone,
+            Photo = member.Photo,
+            Address = $"{member.Address?.BuildingNumber} - {member.Address?.Street} - {member.Address?.City}",
+            DateOfBirth = member.DateOfBirth.ToString("d/MM/yyyy"),
+            MemberShipStartDate = member.MemberShips.Where(x => x.IsActive).Select(x => x.CreatedAt.ToString("d/MM/yyyy")).FirstOrDefault(),
+            MemberShipEndDate = member.MemberShips.Where(x => x.IsActive).Select(x => x.EndDate.ToString("d/MM/yyyy")).FirstOrDefault(),
+            PlanName = member.MemberShips.Where(x => x.IsActive).Select(x => x.Plan.Name).FirstOrDefault()
+        };
+        return model;
     }
 }

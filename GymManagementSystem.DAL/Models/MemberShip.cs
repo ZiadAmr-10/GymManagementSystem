@@ -10,8 +10,8 @@ public class MemberShip : BaseEntity
 
     //StartDate => Createdat
     public DateTime EndDate { get; set; }
-    public string Status => EndDate > DateTime.Now ? "Active" : "Expired" ; //Derived attribute -> ComputedProperty
-    public bool IsActive => EndDate > DateTime.Now; // ComputedProperty
+    public string Status => IsActive ? "Active" : "Expired" ; //Derived attribute -> ComputedProperty
+    public bool IsActive => EndDate > DateTime.Now && CreatedAt<=DateTime.Now; // ComputedProperty
 
 
 }
