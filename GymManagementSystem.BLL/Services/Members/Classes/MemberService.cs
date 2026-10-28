@@ -8,9 +8,11 @@ namespace GymManagementSystem.BLL.Services.Members.Classes;
 public class MemberService : IMemberService 
 {
     private readonly IMemberRepository _memberRepository;
-    public MemberService(IMemberRepository membersRepository)
+    private readonly IHealthRecordRepository _healthRecordRepository;
+    public MemberService(IMemberRepository membersRepository,IHealthRecordRepository healthRecordRepository)
     {
         _memberRepository = membersRepository;
+        _healthRecordRepository = healthRecordRepository;
     }
 
     public async Task<bool> AddMemberAsync(CreateMemberViewModel model)
@@ -88,5 +90,25 @@ public class MemberService : IMemberService
             PlanName = member.MemberShips.Where(x => x.IsActive).Select(x => x.Plan.Name).FirstOrDefault()
         };
         return model;
+    }
+
+    public async Task<HealthRecordViewModel?> GetHealthRecordAsync(int? Id)
+    {
+        if (Id is null || Id <= 0)
+            return null;
+
+        var healthRecord = await _healthRecordRepository.GetHealthRecordAsync(Id);
+
+        if (healthRecord is null)
+            return null;
+
+        return new HealthRecordViewModel()
+        {
+            Height = healthRecord.Height,
+            Weight = healthRecord.Weight,
+            BloodType = healthRecord.BloodType,
+            Note = healthRecord.Note,
+        };
+
     }
 }

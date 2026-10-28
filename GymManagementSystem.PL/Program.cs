@@ -31,6 +31,8 @@ namespace GymManagementSystem.PL
 
             builder.Services.AddScoped<IMemberRepository, MemberRepository>(); 
 
+            builder.Services.AddScoped<IHealthRecordRepository, HealthRecordRepository>();
+
 
             var app = builder.Build();
 

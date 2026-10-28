@@ -65,7 +65,19 @@ public class MembersController : Controller
         {
             return View(member);
         }
-       
 
+
+    }
+
+    public async Task<IActionResult> HealthRecordDetails(int? id)
+    {
+        var model =await _memberService.GetHealthRecordAsync(id);
+         if(model == null)
+        {
+            TempData["ErrorMessage"] = "Health Record Not Found";
+            return RedirectToAction(nameof(Index));
+        }
+
+        return View(model);
     }
 }
