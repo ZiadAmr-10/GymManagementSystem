@@ -9,4 +9,6 @@ public interface IMemberService
     public Task<bool> AddMemberAsync(CreateMemberViewModel model);
     public Task<MemberDetailsViewModel?> GetMemberAsync(int? Id);
     public Task<HealthRecordViewModel?> GetHealthRecordAsync(int? Id);
+    public Task<MemberToUpdateViewModel?> GetMemberToUpdateAsync(int? Id);
+    public Task<bool>UpdateMemberAsync(MemberToUpdateViewModel model);
 }

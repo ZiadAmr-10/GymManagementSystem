@@ -5,11 +5,11 @@ using GymManagementSystem.DAL.Repositories.Interfaces;
 
 namespace GymManagementSystem.BLL.Services.Members.Classes;
 
-public class MemberService : IMemberService 
+public class MemberService : IMemberService
 {
     private readonly IMemberRepository _memberRepository;
     private readonly IHealthRecordRepository _healthRecordRepository;
-    public MemberService(IMemberRepository membersRepository,IHealthRecordRepository healthRecordRepository)
+    public MemberService(IMemberRepository membersRepository, IHealthRecordRepository healthRecordRepository)
     {
         _memberRepository = membersRepository;
         _healthRecordRepository = healthRecordRepository;
@@ -48,7 +48,7 @@ public class MemberService : IMemberService
         {
             return false;
         }
-       
+
 
     }
 
@@ -57,12 +57,12 @@ public class MemberService : IMemberService
         var members = await _memberRepository.GetAllAsync();
         return members.Select(x => new MemberViewModel()
         {
-            id=x.Id,
-            Name=x.Name,
-            Email=x.Email,
-            Phone=x.Phone,
-            Gender=x.Gender.ToString(),
-            Photo=x.Photo,
+            id = x.Id,
+            Name = x.Name,
+            Email = x.Email,
+            Phone = x.Phone,
+            Gender = x.Gender.ToString(),
+            Photo = x.Photo,
         });
     }
 
@@ -110,5 +110,54 @@ public class MemberService : IMemberService
             Note = healthRecord.Note,
         };
 
+    }
+
+    public async Task<MemberToUpdateViewModel?> GetMemberToUpdateAsync(int? Id)
+    {
+        if (Id is null || Id <= 0)
+            return null;
+
+        var member = await _memberRepository.GetByIdAsync(Id.Value);
+        if (member is null)
+            return null;
+
+        var model = new MemberToUpdateViewModel()
+        {
+            Id = member.Id,
+            Name = member.Name,
+            Email = member.Email,
+            Phone = member.Phone,
+            BuildingNumber = member.Address?.BuildingNumber ?? 0,
+            Street = member.Address?.Street ?? "Not Found",
+            City = member.Address?.City ?? "Not Found",
+        };
+
+        return model;
+    }
+
+    public async Task<bool> UpdateMemberAsync(MemberToUpdateViewModel model)
+    {
+        try
+        {
+            if (model == null)
+                return false;
+
+            var member = await _memberRepository.GetByIdAsync(model.Id);
+
+            if (member is null)
+                return false;
+
+            member.Email = model.Email;
+            member.Phone = model.Phone;
+            member.Address.BuildingNumber = model.BuildingNumber;
+            member.Address.Street = model.Street;
+            member.Address.City = model.City;
+
+            return await _memberRepository.UpdateAsync(member) > 0;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 }
