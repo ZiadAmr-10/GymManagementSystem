@@ -160,4 +160,25 @@ public class MemberService : IMemberService
             return false;
         }
     }
+
+    public async Task<bool> DeleteMemberAsync(int? Id)
+    {
+        try
+        {
+            if (Id is null || Id <= 0)
+                return false;
+
+            var member = await _memberRepository.GetByIdAsync(Id.Value);
+            if (member is null)
+                return false;
+
+            return await _memberRepository.DeleteAsync(member) > 0;
+        }
+
+        catch
+        {
+            return false;
+        }
+
+    }
 }

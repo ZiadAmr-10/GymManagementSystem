@@ -85,7 +85,7 @@ public class MembersController : Controller
     [HttpGet]
     public async Task<IActionResult> EditMember(int? id)
     {
-        var member =await _memberService.GetMemberToUpdateAsync(id);
+        var member = await _memberService.GetMemberToUpdateAsync(id);
         if (member == null)
         {
             TempData["ErrorMessage"] = "Member Not Found";
@@ -120,6 +120,30 @@ public class MembersController : Controller
         {
             TempData["ErrorMessage"] = "Fauiler Update";
             return View(model);
+        }
+
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(int? Id)
+    {
+        return View(Id);
+    }
+    [HttpPost]
+    public async Task<IActionResult> DeleteConfirmed(int? Id)
+    {
+        var result = await _memberService.DeleteMemberAsync(Id);
+
+        if (result)
+        {
+            TempData["SuccessMessage"] = "Member Deleted Successfuly";
+            return RedirectToAction(nameof(Index));
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Member Delete Failed";
+
+            return View(nameof(Delete), Id);
         }
 
     }
