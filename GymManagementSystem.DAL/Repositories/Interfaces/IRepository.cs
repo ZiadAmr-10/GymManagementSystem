@@ -6,7 +6,7 @@ public interface IRepository<TEntity> where TEntity : BaseEntity, new()  // Requ
 {
     public Task<IEnumerable<TEntity>> GetAllAsync(bool tracking = false);
     public Task<TEntity?> GetByIdAsync(int id);
-    public Task<int> AddAsync(TEntity entity);
-    public Task<int> UpdateAsync(TEntity entity);
-    public Task<int> DeleteAsync(TEntity entity);
+    public Task AddAsync(TEntity entity);
+    public Task UpdateAsync(TEntity entity);
+    public Task DeleteAsync(TEntity entity);
 }

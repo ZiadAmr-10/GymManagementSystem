@@ -7,12 +7,10 @@ namespace GymManagementSystem.BLL.Services.Members.Classes;
 
 public class MemberService : IMemberService
 {
-    private readonly IMemberRepository _memberRepository;
-    private readonly IHealthRecordRepository _healthRecordRepository;
-    public MemberService(IMemberRepository membersRepository, IHealthRecordRepository healthRecordRepository)
+    private readonly IUnitOfWork _unitOfWork;
+    public MemberService(IUnitOfWork unitOfWork)
     {
-        _memberRepository = membersRepository;
-        _healthRecordRepository = healthRecordRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<bool> AddMemberAsync(CreateMemberViewModel model)
@@ -42,7 +40,8 @@ public class MemberService : IMemberService
 
             };
 
-            return await _memberRepository.AddAsync(Member) > 0;
+            await _unitOfWork.memberRepository.AddAsync(Member);
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
         catch
         {
@@ -54,7 +53,7 @@ public class MemberService : IMemberService
 
     public async Task<IEnumerable<MemberViewModel>> GetMembersAsync()
     {
-        var members = await _memberRepository.GetAllAsync();
+        var members = await _unitOfWork.memberRepository.GetAllAsync();
         return members.Select(x => new MemberViewModel()
         {
             id = x.Id,
@@ -71,7 +70,7 @@ public class MemberService : IMemberService
         if (Id == null || Id.Value == 0)
             return null;
 
-        var member = await _memberRepository.GetMemberWithRelatedDataAsync(Id.Value);
+        var member = await _unitOfWork.memberRepository.GetMemberWithRelatedDataAsync(Id.Value);
 
         if (member == null)
             return null;
@@ -97,7 +96,7 @@ public class MemberService : IMemberService
         if (Id is null || Id <= 0)
             return null;
 
-        var healthRecord = await _healthRecordRepository.GetHealthRecordAsync(Id);
+        var healthRecord = await _unitOfWork.healthRecordRepository.GetHealthRecordAsync(Id);
 
         if (healthRecord is null)
             return null;
@@ -117,7 +116,7 @@ public class MemberService : IMemberService
         if (Id is null || Id <= 0)
             return null;
 
-        var member = await _memberRepository.GetByIdAsync(Id.Value);
+        var member = await _unitOfWork.memberRepository.GetByIdAsync(Id.Value);
         if (member is null)
             return null;
 
@@ -142,7 +141,7 @@ public class MemberService : IMemberService
             if (model == null)
                 return false;
 
-            var member = await _memberRepository.GetByIdAsync(model.Id);
+            var member = await _unitOfWork.memberRepository.GetByIdAsync(model.Id);
 
             if (member is null)
                 return false;
@@ -153,7 +152,8 @@ public class MemberService : IMemberService
             member.Address.Street = model.Street;
             member.Address.City = model.City;
 
-            return await _memberRepository.UpdateAsync(member) > 0;
+            await _unitOfWork.memberRepository.UpdateAsync(member) ;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
         catch (Exception ex)
         {
@@ -168,11 +168,12 @@ public class MemberService : IMemberService
             if (Id is null || Id <= 0)
                 return false;
 
-            var member = await _memberRepository.GetByIdAsync(Id.Value);
+            var member = await _unitOfWork.memberRepository.GetByIdAsync(Id.Value);
             if (member is null)
                 return false;
 
-            return await _memberRepository.DeleteAsync(member) > 0;
+            await _unitOfWork.memberRepository.DeleteAsync(member) ;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
         catch
