@@ -6,6 +6,8 @@ using GymManagementSystem.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using GymManagementSystem.BLL.Services.Members.MemberValidations;
+using GymManagementSystem.BLL.Services.Trainers.Interface;
+using GymManagementSystem.BLL.Services.Trainers.Classes;
 
 namespace GymManagementSystem.PL
 {
@@ -34,6 +36,7 @@ namespace GymManagementSystem.PL
             builder.Services.AddScoped<IHealthRecordRepository, HealthRecordRepository>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ITrainerService,TrainerService>();
 
 
             var app = builder.Build();
