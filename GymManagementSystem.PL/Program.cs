@@ -8,6 +8,7 @@ using FluentValidation;
 using GymManagementSystem.BLL.Services.Members.MemberValidations;
 using GymManagementSystem.BLL.Services.Trainers.Interface;
 using GymManagementSystem.BLL.Services.Trainers.Classes;
+using GymManagementSystem.BLL.Services.Trainers.TrainerValidations;
 
 namespace GymManagementSystem.PL
 {
@@ -30,6 +31,8 @@ namespace GymManagementSystem.PL
             builder.Services.AddScoped<IMemberService, MemberService>();
 
             builder.Services.AddValidatorsFromAssemblyContaining<CreateMemberViewModelValidator>();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateTrainerViewModelValidator>();
 
             builder.Services.AddScoped<IMemberRepository, MemberRepository>(); 
 
