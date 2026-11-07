@@ -7,5 +7,6 @@ namespace GymManagementSystem.BLL.Services.Trainers.Interface
         public Task<IEnumerable<TrainerViewModel>> GetTrainersAsync();
 
         public Task<bool> AddTrainerAsync(CreateTrainerViewModel model);
+        public Task<TrainerDetailsViewModel?> GetTrainerById(int? id);
     }
 }

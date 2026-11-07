@@ -54,5 +54,24 @@ namespace GymManagementSystem.BLL.Services.Trainers.Classes
             }
         }
 
+        public async Task<TrainerDetailsViewModel?> GetTrainerById(int? id)
+        {
+            if (id is null || id <= 0)
+                return null; 
+            var trainer = await _unitOfWork.GetRepository<Trainer>().GetByIdAsync(id.Value);
+
+            if (trainer == null)
+                return null;
+            var model = new TrainerDetailsViewModel()
+            {
+                Name = trainer.Name,
+                Email = trainer.Email,
+                Phone = trainer.Phone,
+                Specialization = trainer.Specialty.ToString(),
+                DateOfBirth = trainer.DateOfBirth.ToString("MM/dd/yyyy"),
+                Address = $"{trainer.Address?.BuildingNumber ?? 0} - {trainer.Address?.Street ?? "Not Found"} - {trainer.Address?.City ?? "Not Found"}"
+            };
+            return model;
+        }
     }
 }

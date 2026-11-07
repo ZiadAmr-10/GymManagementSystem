@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using GymManagementSystem.BLL.Services.Trainers.Interface;
 using GymManagementSystem.BLL.Services.Trainers.ViewModels;
+using GymManagementSystem.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -50,4 +51,20 @@ public class TrainersController : Controller
             return View(nameof(Create), model);
         }
     }
-}
+
+    public async Task<IActionResult> Details(int? id)
+    {
+        if(id == null || id<=0)
+            return RedirectToAction(nameof(Index));
+
+        var trainer = await _trainerService.GetTrainerById(id.Value);
+        if (trainer == null)
+        {
+            TempData["ErrorMessage"] = "Trainer Not Found";
+            return RedirectToAction(nameof(Index));
+        }
+           
+        return View(trainer);        
+     }
+        
+  }
