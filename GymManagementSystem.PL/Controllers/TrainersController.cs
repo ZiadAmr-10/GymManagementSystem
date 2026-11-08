@@ -108,6 +108,33 @@ public class TrainersController : Controller
             TempData["ErrorMessage"] = "Failed to Update Trainer";
             return View(nameof(Edit), model);
         }
+    }
+    
+    [HttpGet]    
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null || id <= 0)
+            return RedirectToAction(nameof(Index));
+
+        return View(id);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteConfirmed(int? Id)
+    {
+        var result = await _trainerService.DeleteTrainerAsync(Id);
+
+        if (result)
+        {
+            TempData["SuccessMessage"] = "Trainer Deleted Successfully";
+            return RedirectToAction(nameof(Index));
+        }
+        else
+        {
+            TempData["ErrorMessage"] = " Delete Failed";
+
+            return View(nameof(Delete), Id);
+        }
     } 
         
   }

@@ -127,5 +127,23 @@ namespace GymManagementSystem.BLL.Services.Trainers.Classes
             }
             
         }
+
+        public async Task<bool> DeleteTrainerAsync(int? id)
+        {
+            try
+            {
+                if (id == null || id <= 0)
+                    return false;
+                var trainer = await _unitOfWork.GetRepository<Trainer>().GetByIdAsync(id.Value);
+                if (trainer == null)
+                    return false;
+                await _unitOfWork.GetRepository<Trainer>().DeleteAsync(trainer);
+                return await _unitOfWork.SaveChangesAsync() > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
