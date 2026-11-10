@@ -6,5 +6,6 @@ public interface IPlanRepository : IRepository<Plan>
     
 
     public Task<IEnumerable<Plan>> GetAllWithMemberShipsAsync(bool tracking = false);
-    
+    Task<Plan?> GetPlanWithMemberShipsAsync(int id, bool tracking = false);
+
 }

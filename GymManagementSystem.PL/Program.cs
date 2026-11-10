@@ -11,7 +11,6 @@ using GymManagementSystem.BLL.Services.Trainers.Classes;
 using GymManagementSystem.BLL.Services.Trainers.TrainerValidations;
 using GymManagementSystem.BLL.Services.Plans.Classes;
 using GymManagementSystem.BLL.Services.Plans.Interfaces;
-
 namespace GymManagementSystem.PL
 {
     public class Program
