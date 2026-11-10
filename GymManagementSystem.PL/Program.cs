@@ -9,6 +9,8 @@ using GymManagementSystem.BLL.Services.Members.MemberValidations;
 using GymManagementSystem.BLL.Services.Trainers.Interface;
 using GymManagementSystem.BLL.Services.Trainers.Classes;
 using GymManagementSystem.BLL.Services.Trainers.TrainerValidations;
+using GymManagementSystem.BLL.Services.Plans.Classes;
+using GymManagementSystem.BLL.Services.Plans.Interfaces;
 
 namespace GymManagementSystem.PL
 {
@@ -39,7 +41,10 @@ namespace GymManagementSystem.PL
             builder.Services.AddScoped<IHealthRecordRepository, HealthRecordRepository>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             builder.Services.AddScoped<ITrainerService,TrainerService>();
+
+            builder.Services.AddScoped<IPlanService, PlanService>();
 
 
             var app = builder.Build();

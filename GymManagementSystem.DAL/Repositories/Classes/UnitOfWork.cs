@@ -11,11 +11,14 @@ namespace GymManagementSystem.DAL.Repositories.Classes
 
         public IHealthRecordRepository healthRecordRepository { get; }
 
-        public UnitOfWork(GymDbContext dbContext,IMemberRepository memberRepository,IHealthRecordRepository healthRecordRepository)
+        public IPlanRepository planRepository { get; }
+
+        public UnitOfWork(GymDbContext dbContext,IMemberRepository memberRepository,IHealthRecordRepository healthRecordRepository,IPlanRepository planRepository)
         {
             _dbContext = dbContext;
             this.memberRepository = memberRepository;
             this.healthRecordRepository = healthRecordRepository;
+            this.planRepository = planRepository;
         }
 
         private readonly Dictionary<Type, object> Repos = [];
