@@ -16,13 +16,16 @@ public class PlanController : Controller
         return View(plans);
     }
 
-    //public async Task<IActionResult> Details(int id)
-    //{
-    //    var plan = await _planRepository.GetByIdAsync(id);
-    //    if (plan == null)
-    //        return RedirectToAction(nameof(Index));
-    //    else
-    //         return View(plan);
-    //}
+    public async Task<IActionResult> Details(int? id)
+    {
+        if(id == null || id <=0)
+            return RedirectToAction(nameof(Index));
+
+        var plan = await _planService.GetPlanDetailsAsync(id);
+        if (plan == null)
+            return RedirectToAction(nameof(Index));
+        
+        return View(plan);
+    }
 }
 

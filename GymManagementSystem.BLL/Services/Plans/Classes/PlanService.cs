@@ -25,5 +25,23 @@ namespace GymManagementSystem.BLL.Services.Plans.Classes
                 IsActive = x.IsActive
             });
         }
+        public async Task<PlanDetailsViewModel?> GetPlanDetailsAsync(int? id)
+        {
+            if (id == null || id <= 0)
+                return null;
+            var plan =await _unitOfWork.planRepository.GetByIdAsync(id.Value);
+            if (plan == null)
+                return null;
+            var model = new PlanDetailsViewModel()
+            {
+                Id = plan.Id,
+                Name = plan.Name,
+                Price = plan.Price,
+                DurationDays = plan.DurationDays,
+                Description = plan.Description,
+                IsActive = plan.IsActive
+            };
+            return model;
+        }
     }
 }
