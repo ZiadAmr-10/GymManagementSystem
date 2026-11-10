@@ -63,6 +63,20 @@ public class PlanController : Controller
 
         TempData["ErrorMessage"] = "Failed to Update Plan";
         return View(model);
-    } 
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ToggleStatus(int? id)
+    {
+        var result = await _planService.TogglePlanStatusAsync(id);
+
+        if (result)
+            TempData["SuccessMessage"] = "Plan Status Changed";
+        else
+            TempData["ErrorMessage"] = "Failed to Change Plan Status";
+
+        return RedirectToAction(nameof(Index));
+    }
+
 }
 

@@ -21,6 +21,6 @@ public class PlanRepository : Repository<Plan> , IPlanRepository
 
     public async Task<Plan?> GetPlanWithMemberShipsAsync(int id, bool tracking = false)
     {
-        return tracking ? await _dbContext.Plans.Include(x => x.MemberShips).FirstOrDefaultAsync(x => x.Id == id) : await _dbContext.Plans.Include(x => x.MemberShips).AsNoTracking().FirstOrDefaultAsync();
+        return tracking ? await _dbContext.Plans.Include(x => x.MemberShips).FirstOrDefaultAsync(x => x.Id == id) : await _dbContext.Plans.Include(x => x.MemberShips).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
     }
 }

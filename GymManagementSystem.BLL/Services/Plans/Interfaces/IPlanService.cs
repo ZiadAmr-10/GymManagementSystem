@@ -8,5 +8,6 @@ namespace GymManagementSystem.BLL.Services.Plans.Interfaces
         public Task<PlanDetailsViewModel?> GetPlanDetailsAsync(int? id);
         Task<PlanToUpdateViewModel?> GetPlanToUpdateAsync(int? id);
         Task<bool> UpdatePlanAsync(PlanToUpdateViewModel model);
+        Task<bool> TogglePlanStatusAsync(int? id);
     }
 }

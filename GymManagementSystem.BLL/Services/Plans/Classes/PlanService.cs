@@ -77,5 +77,27 @@ namespace GymManagementSystem.BLL.Services.Plans.Classes
             await _unitOfWork.planRepository.UpdateAsync(plan);
           return  await _unitOfWork.SaveChangesAsync() > 0;
         }
+
+        public async Task<bool> TogglePlanStatusAsync(int? id)
+        {
+            if (id == null || id <= 0)
+                return false;
+
+            var plan = await _unitOfWork.planRepository.GetPlanWithMemberShipsAsync(id.Value);
+
+            if (plan == null)
+                return false;
+
+            if (plan.IsActive && plan.MemberShips.Any(x => x.IsActive))
+                return false;
+
+            plan.IsActive = !plan.IsActive;
+
+            await _unitOfWork.planRepository.UpdateAsync(plan);
+
+            return await _unitOfWork.SaveChangesAsync() > 0;
+        }
+    
     }
+    
 }

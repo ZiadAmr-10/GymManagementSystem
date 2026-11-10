@@ -8,6 +8,23 @@
         </div>
     </header>
 
+    @* Display Success and Error Messages *@
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
     @if (Model.Any())
     {
         <div class="row g-4">
@@ -90,7 +107,7 @@
                                         @if (plan.IsActive)
                                         {
                                             <form asp-controller="Plan"
-                                                  asp-action="Deactivate"
+                                                  asp-action="ToggleStatus"
                                                   asp-route-id="@plan.Id"
                                                   method="post"
                                                   class="flex-fill">
@@ -105,7 +122,7 @@
                                         else
                                         {
                                             <form asp-controller="Plan"
-                                                  asp-action="Activate"
+                                                  asp-action="ToggleStatus"
                                                   asp-route-id="@plan.Id"
                                                   method="post"
                                                   class="flex-fill">
