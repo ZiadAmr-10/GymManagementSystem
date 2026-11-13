@@ -7,6 +7,7 @@ namespace GymManagementSystem.DAL.Repositories.Interfaces
         public IMemberRepository memberRepository { get;  }
         public IHealthRecordRepository healthRecordRepository { get;  }
         public IPlanRepository planRepository { get; } 
+        public ISessionRepository sessionRepository { get; }
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity,new();
 
       public Task<int> SaveChangesAsync();

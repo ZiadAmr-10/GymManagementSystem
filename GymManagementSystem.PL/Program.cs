@@ -11,6 +11,8 @@ using GymManagementSystem.BLL.Services.Trainers.Classes;
 using GymManagementSystem.BLL.Services.Trainers.TrainerValidations;
 using GymManagementSystem.BLL.Services.Plans.Classes;
 using GymManagementSystem.BLL.Services.Plans.Interfaces;
+using GymManagementSystem.BLL.Services.Sessions.Interfaces;
+using GymManagementSystem.BLL.Services.Sessions.Classes;
 namespace GymManagementSystem.PL
 {
     public class Program
@@ -38,6 +40,10 @@ namespace GymManagementSystem.PL
             builder.Services.AddScoped<IMemberRepository, MemberRepository>(); 
 
             builder.Services.AddScoped<IHealthRecordRepository, HealthRecordRepository>();
+
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+
+            builder.Services.AddScoped<ISessionService,SessionService>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
