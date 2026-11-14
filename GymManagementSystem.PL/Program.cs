@@ -13,6 +13,7 @@ using GymManagementSystem.BLL.Services.Plans.Classes;
 using GymManagementSystem.BLL.Services.Plans.Interfaces;
 using GymManagementSystem.BLL.Services.Sessions.Interfaces;
 using GymManagementSystem.BLL.Services.Sessions.Classes;
+using GymManagementSystem.BLL.Services.Sessions.Mapping;
 namespace GymManagementSystem.PL
 {
     public class Program
@@ -50,6 +51,8 @@ namespace GymManagementSystem.PL
             builder.Services.AddScoped<ITrainerService,TrainerService>();
 
             builder.Services.AddScoped<IPlanService, PlanService>();
+
+            builder.Services.AddAutoMapper(x => x.AddProfile(new SessionProfile()));
 
 
             var app = builder.Build();
