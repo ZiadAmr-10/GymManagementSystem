@@ -2,6 +2,7 @@
 using GymManagementSystem.BLL.Services.Sessions.Interfaces;
 using GymManagementSystem.BLL.Services.Sessions.ViewModels;
 using GymManagementSystem.DAL.Repositories.Interfaces;
+using GymManagmentSystem.BLL.Common;
 
 namespace GymManagementSystem.BLL.Services.Sessions.Classes
 {
@@ -16,9 +17,10 @@ namespace GymManagementSystem.BLL.Services.Sessions.Classes
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SessionViewModel>> GetAllSessionsAsync()
+        public async Task<Result<IEnumerable<SessionViewModel>>> GetAllSessionsAsync()
         {
            var sessions = await _unitOfWork.sessionRepository.GetAllSessionsWithTrainerAndCategoryAsync();
+           
 
             var mappedSession = _mapper.Map<IEnumerable<SessionViewModel>>(sessions); 
 
@@ -26,7 +28,9 @@ namespace GymManagementSystem.BLL.Services.Sessions.Classes
             {
                 session.AvailableSlots = session.Capacity - await _unitOfWork.sessionRepository.GetCountOfBookedSlotsAsync(session.Id);
             }
-            return mappedSession;
+
+            return Result<IEnumerable<SessionViewModel>>.OK(mappedSession);
+           
         }
     }
 }
