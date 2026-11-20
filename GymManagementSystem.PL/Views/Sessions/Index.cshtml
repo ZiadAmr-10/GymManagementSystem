@@ -87,11 +87,16 @@ else if (TempData["ErrorMessage"] != null)
                                     <strong>Duration:</strong>
                                     @($"{(int)session.Duration.TotalHours}h {session.Duration.Minutes}m")
                                 </div>
-
                                 <div class="info-item">
                                     <i class="bi bi-people text-primary-color me-2"></i>
+                                    <strong>Capacity:</strong>
+                                    @session.BookedSlots / @session.Capacity slots
+                                </div>
+
+                                <div class="info-item">
+                                    <i class="bi bi-person-check text-primary-color me-2"></i>
                                     <strong>Available Slots:</strong>
-                                    @session.AvailableSlots / @session.Capacity
+                                    @session.AvailableSlots
                                 </div>
 
                             </div>
