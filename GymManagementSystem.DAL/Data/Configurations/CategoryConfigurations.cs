@@ -18,7 +18,8 @@ namespace GymManagementSystem.DAL.Data.Configurations
                 new Category() { Id = 2, CategoryName = "Cardio" },
                 new Category() { Id = 3, CategoryName = "Yoga" },
                 new Category() { Id = 4, CategoryName = "Boxing" },
-                new Category() { Id = 5, CategoryName = "CrossFit" }
+                new Category() { Id = 5, CategoryName = "CrossFit" },
+                new Category() { Id = 6, CategoryName = "GeneralFitness" }
                 );
 
         }

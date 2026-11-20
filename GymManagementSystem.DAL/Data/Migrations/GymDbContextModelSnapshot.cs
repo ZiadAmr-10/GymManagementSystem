@@ -77,6 +77,12 @@ namespace GymManagementSystem.DAL.Data.Migrations
                             Id = 5,
                             CategoryName = "CrossFit",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryName = "GeneralFitness",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
