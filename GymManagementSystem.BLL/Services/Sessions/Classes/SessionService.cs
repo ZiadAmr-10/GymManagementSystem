@@ -87,5 +87,25 @@ namespace GymManagementSystem.BLL.Services.Sessions.Classes
 
             return Result<IEnumerable<CategorySelectViewModel>>.OK(model);
         }
+
+        public async Task<Result<SessionDetailsViewModel>> GetSessionDetailsAsync(int id)
+        {
+            try
+            {
+                var session = await _unitOfWork.sessionRepository.GetSessionWithTrainerAndCategoryAsync(id);
+                if (session == null)
+                    return Result<SessionDetailsViewModel>.NotFound();
+
+                var sessionDetails = _mapper.Map<SessionDetailsViewModel>(session);
+
+                sessionDetails.BookedSlots = await _unitOfWork.sessionRepository.GetCountOfBookedSlotsAsync(id);
+
+                return Result<SessionDetailsViewModel>.OK(sessionDetails);
+            }
+            catch
+            {
+                return Result<SessionDetailsViewModel>.Fail("Internal Server Error");
+            }
+        }
     }
 }

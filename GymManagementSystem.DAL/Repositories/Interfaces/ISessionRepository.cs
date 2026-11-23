@@ -6,5 +6,6 @@ namespace GymManagementSystem.DAL.Repositories.Interfaces
     {
         Task<IEnumerable<Session>> GetAllSessionsWithTrainerAndCategoryAsync();
         Task<int> GetCountOfBookedSlotsAsync(int SessionId);
+        Task<Session?> GetSessionWithTrainerAndCategoryAsync(int SessionId);
     }
 }

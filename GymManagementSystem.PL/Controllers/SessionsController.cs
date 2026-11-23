@@ -68,6 +68,20 @@ namespace GymManagementSystem.PL.Controllers
 
         
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var result = await _sessionService.GetSessionDetailsAsync(id);
+
+            if (!result.Success)
+            {
+                TempData["ErrorMessage"] = "Not Found";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(result.Value);
+        }
+
         #region Helper Methods
         private async Task LoadTrainerAndCategorisForSelectedList()
          {
