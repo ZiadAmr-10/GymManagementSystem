@@ -20,7 +20,9 @@ namespace GymManagementSystem.BLL.Services.Sessions.Mapping
             CreateMap<Session, SessionDetailsViewModel>()
                  .ForMember(dest=>dest.TrainerName ,opt=>opt.MapFrom(src=>src.Trainer.Name))
                  .ForMember(dest=>dest.CategoryName,opt=>opt.MapFrom(src=>src.Category.CategoryName));
-                 
+
+            CreateMap<Session,SessionToUpdateViewModel>()
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName));
 
         }
     }

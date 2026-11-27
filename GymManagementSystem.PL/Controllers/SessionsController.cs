@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using GymManagementSystem.BLL.Services.Sessions.Interfaces;
 using GymManagementSystem.BLL.Services.Sessions.ViewModels;
+using GymManagementSystem.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -82,6 +83,60 @@ namespace GymManagementSystem.PL.Controllers
             return View(result.Value);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id <= 0)
+                return RedirectToAction(nameof(Index));
+
+            var result = await _sessionService.GetSessionToUpdateAsync(id);
+
+            if (!result.Success)
+            {
+                TempData["ErrorMessage"] = result.Error;
+                return RedirectToAction(nameof(Index));
+            }
+
+            await LoadTrainersForEditAsync(result.Value.TrainerId);
+
+            return View(result.Value);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(SessionToUpdateViewModel? session)
+        {
+            if (session == null || session.Id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Session";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                await LoadTrainersForEditAsync(session.TrainerId);
+                return View(session);
+            }
+
+            var result = await _sessionService.UpdateSessionAsync(session);
+
+            if (!result.Success)
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    result.Error ?? "Failed to update session"
+                );
+
+                await LoadTrainersForEditAsync(session.TrainerId);
+
+                return View(session);
+            }
+
+            TempData["SuccessMessage"] = "Session Updated Successfully";
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
         #region Helper Methods
         private async Task LoadTrainerAndCategorisForSelectedList()
          {
@@ -90,6 +145,17 @@ namespace GymManagementSystem.PL.Controllers
 
             ViewBag.Trainers = new SelectList(trainers.Value, "Id", "Name");
             ViewBag.Categories = new SelectList(categories.Value, "Id", "CategoryName");
+        }
+        private async Task LoadTrainersForEditAsync(int? selectedTrainerId)
+        {
+            var trainers = await _sessionService.GetTrainersForDropDownAsync();
+
+            ViewBag.Trainers = new SelectList(
+                trainers.Value,
+                "Id",
+                "Name",
+                selectedTrainerId
+            );
         }
         #endregion
     }

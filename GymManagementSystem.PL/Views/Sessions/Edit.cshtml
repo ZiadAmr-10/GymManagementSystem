@@ -1,0 +1,178 @@
+﻿@model SessionToUpdateViewModel
+
+@{
+    ViewData["Title"] = "Edit Session";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+
+    <header class="mb-4">
+        <h3 class="text-primary-color">Edit Session</h3>
+        <p class="text-muted">Update session information</p>
+    </header>
+
+    <!-- Locked Information -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <h5 class="text-primary fw-bold mb-3">
+                        Session Information
+                    </h5>
+                    <hr class="mt-2">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Category</small>
+                            <strong class="text-primary-color fs-5">
+                                @Model.CategoryName
+                            </strong>
+                        </div>
+
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Capacity</small>
+                            <strong class="fs-5">
+                                @Model.Capacity slots
+                            </strong>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form asp-action="Edit" method="post">
+
+        <!-- Hidden Properties -->
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="CategoryName" />
+        <input type="hidden" asp-for="Capacity" />
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+
+                        <!-- Business Validation Errors -->
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <!-- Editable Session Information -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-primary fw-bold">
+                                Update Session Information
+                            </h5>
+                            <hr class="mt-2">
+                        </div>
+
+                        <div class="row g-3 mb-4">
+
+                            <!-- Trainer -->
+                            <div class="col-md-6">
+                                <label asp-for="TrainerId"
+                                       class="form-label fw-semibold">
+                                    Trainer <span class="text-danger">*</span>
+                                </label>
+
+                                <select asp-for="TrainerId"
+                                        asp-items="ViewBag.Trainers"
+                                        class="form-select">
+                                    <option value="">Select Trainer</option>
+                                </select>
+
+                                <span asp-validation-for="TrainerId"
+                                      class="text-danger"></span>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12">
+                                <label asp-for="Description"
+                                       class="form-label fw-semibold">
+                                    Description <span class="text-danger">*</span>
+                                </label>
+
+                                <textarea asp-for="Description"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Describe the session content and objectives..."></textarea>
+
+                                <span asp-validation-for="Description"
+                                      class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- Date & Time -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-primary fw-bold">Date & Time</h5>
+                            <hr class="mt-2">
+                        </div>
+
+                        <div class="row g-3">
+
+                            <!-- Start Date -->
+                            <div class="col-md-6">
+                                <label asp-for="StartDate"
+                                       class="form-label fw-semibold">
+                                    Start Date & Time <span class="text-danger">*</span>
+                                </label>
+
+                                <input asp-for="StartDate"
+                                       type="datetime-local"
+                                       class="form-control" />
+
+                                <span asp-validation-for="StartDate"
+                                      class="text-danger"></span>
+                            </div>
+
+                            <!-- End Date -->
+                            <div class="col-md-6">
+                                <label asp-for="EndDate"
+                                       class="form-label fw-semibold">
+                                    End Date & Time <span class="text-danger">*</span>
+                                </label>
+
+                                <input asp-for="EndDate"
+                                       type="datetime-local"
+                                       class="form-control" />
+
+                                <span asp-validation-for="EndDate"
+                                      class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+
+                            <a asp-action="Index" class="btn btn-outline">
+                                <i class="bi bi-arrow-left me-1"></i>
+                                Cancel
+                            </a>
+
+                            <button type="submit" class="btn btn-fill">
+                                <i class="bi bi-check-lg me-1"></i>
+                                Update Session
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_Alert.cshtml" />
+}

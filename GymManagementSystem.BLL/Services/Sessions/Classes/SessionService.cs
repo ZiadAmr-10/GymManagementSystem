@@ -107,5 +107,103 @@ namespace GymManagementSystem.BLL.Services.Sessions.Classes
                 return Result<SessionDetailsViewModel>.Fail("Internal Server Error");
             }
         }
+
+        public async Task<Result<SessionToUpdateViewModel>> GetSessionToUpdateAsync(int? id)
+        {
+            try
+            {
+                if (!id.HasValue || id.Value <= 0)
+                    return Result<SessionToUpdateViewModel>.NotFound();
+
+                var session = await _unitOfWork.sessionRepository.GetSessionWithTrainerAndCategoryAsync(id.Value);
+
+                if (session == null)
+                    return Result<SessionToUpdateViewModel>.NotFound();
+
+                var mappedSession = _mapper.Map<SessionToUpdateViewModel>(session);
+
+                return Result<SessionToUpdateViewModel>.OK(mappedSession);
+            }
+            catch
+            {
+                return Result<SessionToUpdateViewModel>.Fail("Failed to retrieve session for editing");
+            }
+        }
+
+        public async Task<Result> UpdateSessionAsync(SessionToUpdateViewModel? model)
+        {
+            try
+            {
+                if (model == null || model.Id <= 0)
+                    return Result.Fail("Model Not Found ");
+
+                if (!model.TrainerId.HasValue || model.TrainerId.Value <= 0)
+                    return Result.Validation("Trainer is required");
+
+                if (!model.StartDate.HasValue || !model.EndDate.HasValue)
+                    return Result.Validation("Start and End dates are required");
+
+                var session = await _unitOfWork.sessionRepository.GetByIdAsync(model.Id);
+
+                if (session == null)
+                    return Result.NotFound();
+                if (session.StartDate <= DateTime.Now)
+                {
+                    return Result.Fail("Only upcoming sessions can be edited");
+                }
+
+                if (model.EndDate.Value <= model.StartDate.Value)
+                {
+                    return Result.Fail("EndDate must be After Start Date");
+                }
+
+                if (model.StartDate.Value <= DateTime.Now)
+                {
+                    return Result.Fail("StartDate must be In The Future");
+                }
+
+                var trainer = await _unitOfWork.GetRepository<Trainer>().GetByIdAsync(model.TrainerId.Value);
+
+                if (trainer == null)
+                    return Result.Fail("Trainer Not Found");
+
+                var category = await _unitOfWork.GetRepository<Category>().GetByIdAsync(session.CategoryId);
+
+                if (category == null)
+                    return Result.Fail("Category Not Found");
+
+                bool isValid = Enum.TryParse<Specialty>(category.CategoryName, true, out var categorySpecialty);
+
+                if (!isValid || trainer.Specialty != categorySpecialty)
+                    return Result.Fail("Trainer does not match the session category");
+
+                var sessions = await _unitOfWork.sessionRepository.GetAllAsync();
+
+                bool isTrainerNotAvailable = sessions.Any(x => x.TrainerId == model.TrainerId.Value
+                                                          && x.Id != model.Id
+                                                          && x.StartDate < model.EndDate.Value
+                                                          && x.EndDate > model.StartDate.Value);
+
+                if (isTrainerNotAvailable)
+                    return Result.Fail("Trainer not available this time");
+
+                session.TrainerId = model.TrainerId.Value;
+                session.Description = model.Description;
+                session.StartDate = model.StartDate.Value;
+                session.EndDate = model.EndDate.Value;
+                await _unitOfWork.sessionRepository.UpdateAsync(session);
+                var result = await _unitOfWork.SaveChangesAsync() > 0;
+
+                if (result)
+                    return Result.OK();
+                else
+                    return Result.Fail("Faild To update the session");
+            }
+            catch
+            {
+                return Result.Fail("Internal Server Error");
+            }
+
+        }
     }
 }

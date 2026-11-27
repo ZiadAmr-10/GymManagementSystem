@@ -10,5 +10,7 @@ namespace GymManagementSystem.BLL.Services.Sessions.Interfaces
         public Task<Result<IEnumerable<TrainerSelectViewModel>>> GetTrainersForDropDownAsync();
         public Task<Result<IEnumerable<CategorySelectViewModel>>> GetCategoriesForDropDownAsync();
         public Task<Result<SessionDetailsViewModel>> GetSessionDetailsAsync(int id);
+        public Task<Result<SessionToUpdateViewModel>> GetSessionToUpdateAsync(int? id);
+        public Task<Result> UpdateSessionAsync(SessionToUpdateViewModel? model);
     }
 }
