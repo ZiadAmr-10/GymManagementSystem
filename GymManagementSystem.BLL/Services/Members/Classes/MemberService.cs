@@ -78,30 +78,37 @@ public class MemberService : IMemberService
       
     }
 
-    public async Task<MemberDetailsViewModel?> GetMemberAsync(int? Id)
+    public async Task<Result<MemberDetailsViewModel?>> GetMemberAsync(int? Id)
     {
-        if (Id == null || Id.Value == 0)
-            return null;
-
-        var member = await _unitOfWork.memberRepository.GetMemberWithRelatedDataAsync(Id.Value);
-
-        if (member == null)
-            return null;
-
-        var model = new MemberDetailsViewModel()
+        try
         {
-            Email = member.Email,
-            Gender = member.Gender.ToString(),
-            Name = member.Name,
-            Phone = member.Phone,
-            Photo = member.Photo,
-            Address = $"{member.Address?.BuildingNumber} - {member.Address?.Street} - {member.Address?.City}",
-            DateOfBirth = member.DateOfBirth.ToString("d/MM/yyyy"),
-            MemberShipStartDate = member.MemberShips.Where(x => x.IsActive).Select(x => x.CreatedAt.ToString("d/MM/yyyy")).FirstOrDefault(),
-            MemberShipEndDate = member.MemberShips.Where(x => x.IsActive).Select(x => x.EndDate.ToString("d/MM/yyyy")).FirstOrDefault(),
-            PlanName = member.MemberShips.Where(x => x.IsActive).Select(x => x.Plan.Name).FirstOrDefault()
-        };
-        return model;
+            if (Id == null || Id.Value == 0)
+                return Result<MemberDetailsViewModel>.Fail("Invalid Id");
+
+            var member = await _unitOfWork.memberRepository.GetMemberWithRelatedDataAsync(Id.Value);
+
+            if (member == null)
+                return Result<MemberDetailsViewModel>.NotFound("Not found member");
+
+            var model = new MemberDetailsViewModel()
+            {
+                Email = member.Email,
+                Gender = member.Gender.ToString(),
+                Name = member.Name,
+                Phone = member.Phone,
+                Photo = member.Photo,
+                Address = $"{member.Address?.BuildingNumber} - {member.Address?.Street} - {member.Address?.City}",
+                DateOfBirth = member.DateOfBirth.ToString("d/MM/yyyy"),
+                MemberShipStartDate = member.MemberShips.Where(x => x.IsActive).Select(x => x.CreatedAt.ToString("d/MM/yyyy")).FirstOrDefault(),
+                MemberShipEndDate = member.MemberShips.Where(x => x.IsActive).Select(x => x.EndDate.ToString("d/MM/yyyy")).FirstOrDefault(),
+                PlanName = member.MemberShips.Where(x => x.IsActive).Select(x => x.Plan.Name).FirstOrDefault()
+            };
+            return Result<MemberDetailsViewModel>.OK(model);
+        }
+        catch
+        {
+            return Result<MemberDetailsViewModel>.Fail("Internal server error");
+        }
     }
 
     public async Task<HealthRecordViewModel?> GetHealthRecordAsync(int? Id)

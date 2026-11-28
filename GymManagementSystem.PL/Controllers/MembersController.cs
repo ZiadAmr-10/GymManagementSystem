@@ -63,19 +63,17 @@ public class MembersController : Controller
     public async Task<IActionResult> Details(int? id)
     {
 
-        var member = await _memberService.GetMemberAsync(id);
+        var result = await _memberService.GetMemberAsync(id);
 
-        if (member == null)
+        if (!result.Success || result.Value is null)
         {
-            TempData["ErrorMessage"] = "Member Not Found";
+            TempData["ErrorMessage"] = result.Error;
             return RedirectToAction(nameof(Index));
         }
         else
         {
-            return View(member);
+            return View(result.Value);
         }
-
-
     }
 
     public async Task<IActionResult> HealthRecordDetails(int? id)
