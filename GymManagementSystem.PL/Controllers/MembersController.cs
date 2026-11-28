@@ -19,8 +19,15 @@ public class MembersController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        var Members = await _memberService.GetMembersAsync();
-        return View(Members);
+        var result = await _memberService.GetMembersAsync();
+
+        if (!result.Success)
+        {
+            TempData["ErrorMessage"] = result.Error;
+            return View(Enumerable.Empty<MemberViewModel>()); // Return an empty collection instead of null to prevent NullReferenceException in the View.
+        }
+
+        return View(result.Value);
     }
     [HttpGet]
     public IActionResult Create()

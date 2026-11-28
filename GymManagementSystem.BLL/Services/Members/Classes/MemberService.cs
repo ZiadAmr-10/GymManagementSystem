@@ -2,6 +2,7 @@
 using GymManagementSystem.BLL.Services.Members.ViewModels;
 using GymManagementSystem.DAL.Models;
 using GymManagementSystem.DAL.Repositories.Interfaces;
+using GymManagmentSystem.BLL.Common;
 
 namespace GymManagementSystem.BLL.Services.Members.Classes;
 
@@ -51,18 +52,28 @@ public class MemberService : IMemberService
 
     }
 
-    public async Task<IEnumerable<MemberViewModel>> GetMembersAsync()
+    public async Task<Result<IEnumerable<MemberViewModel>>> GetMembersAsync()
     {
-        var members = await _unitOfWork.memberRepository.GetAllAsync();
-        return members.Select(x => new MemberViewModel()
+        try
         {
-            id = x.Id,
-            Name = x.Name,
-            Email = x.Email,
-            Phone = x.Phone,
-            Gender = x.Gender.ToString(),
-            Photo = x.Photo,
-        });
+            var members = await _unitOfWork.memberRepository.GetAllAsync();
+            var mappedMembers = members.Select(x => new MemberViewModel()
+            {
+                id = x.Id,
+                Name = x.Name,
+                Email = x.Email,
+                Phone = x.Phone,
+                Gender = x.Gender.ToString(),
+                Photo = x.Photo,
+            }).ToList(); // Forces immediate execution of the projection inside the try block.
+
+            return Result<IEnumerable<MemberViewModel>>.OK(mappedMembers);
+        }
+        catch
+        {
+            return Result<IEnumerable<MemberViewModel>>.Fail("Internal Server Error");
+        }
+      
     }
 
     public async Task<MemberDetailsViewModel?> GetMemberAsync(int? Id)
