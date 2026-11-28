@@ -14,11 +14,11 @@ public class MemberService : IMemberService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> AddMemberAsync(CreateMemberViewModel model)
+    public async Task<Result> AddMemberAsync(CreateMemberViewModel model)
     {
         try
         {
-            var Member = new Member()
+            var member = new Member()
             {
                 Name = model.Name,
                 Email = model.Email,
@@ -41,16 +41,18 @@ public class MemberService : IMemberService
 
             };
 
-            await _unitOfWork.memberRepository.AddAsync(Member);
-            return await _unitOfWork.SaveChangesAsync() > 0;
+            await _unitOfWork.memberRepository.AddAsync(member);
+            var result = await _unitOfWork.SaveChangesAsync() > 0;
+            if(result)
+                  return Result.OK();
+            return Result.Fail("Failed to add member");
         }
         catch
         {
-            return false;
+            return Result.Fail("Internal Server error");
         }
-
-
-    }
+   }
+    
 
     public async Task<Result<IEnumerable<MemberViewModel>>> GetMembersAsync()
     {
