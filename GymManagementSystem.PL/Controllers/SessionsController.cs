@@ -135,7 +135,38 @@ namespace GymManagementSystem.PL.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (!id.HasValue || id.Value <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Session";
+                return RedirectToAction(nameof(Index));
+            }
 
+            return View(id.Value);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            if (!id.HasValue || id.Value <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Session";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var result = await _sessionService.DeleteSessionAsync(id);
+
+            if (!result.Success)
+            {
+                TempData["ErrorMessage"] = result.Error;
+                return View("Delete", id.Value);
+            }
+
+            TempData["SuccessMessage"] = "Session Deleted Successfully";
+            return RedirectToAction(nameof(Index));
+        }
 
         #region Helper Methods
         private async Task LoadTrainerAndCategorisForSelectedList()

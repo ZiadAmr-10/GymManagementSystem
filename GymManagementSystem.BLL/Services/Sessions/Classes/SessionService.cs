@@ -205,5 +205,34 @@ namespace GymManagementSystem.BLL.Services.Sessions.Classes
             }
 
         }
+        public async Task<Result> DeleteSessionAsync(int? id)
+        {
+            try
+            {
+                if (!id.HasValue || id.Value <= 0)
+                    return Result.Fail("Invalid Id");
+
+                var session = await _unitOfWork.sessionRepository.GetByIdAsync(id.Value);
+
+                if (session == null)
+                    return Result.Fail("Session Not Found");
+
+                if (session.StartDate <= DateTime.Now && session.EndDate >= DateTime.Now)
+                    return Result.Fail("Cannot delete an ongoing session");
+
+                await _unitOfWork.sessionRepository.DeleteAsync(session);
+
+                var result = await _unitOfWork.SaveChangesAsync() > 0;
+
+                if (result)
+                    return Result.OK();
+
+                return Result.Fail("Session Cannot be Deleted");
+            }
+            catch
+            {
+                return Result.Fail("Internal Server Error");
+            }
+        }
     }
 }
